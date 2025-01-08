@@ -4,63 +4,82 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add Cheat Button
   document.getElementById("addCheat").addEventListener("click", () => {
-    const description = document.getElementById("cheatDescription").value.trim();
-    const code = document.getElementById("cheatCode").value.trim();
-    const enable = document.getElementById("cheatEnable").checked;
+    const gameName = document.getElementById("gameName").value.trim();
+    const gameID = document.getElementById("gameID").value.trim();
+    const gameDate = document.getElementById("gameDate").value.trim();
+    const cheatName = document.getElementById("cheatName").value.trim();
+    const cheatNote = document.getElementById("cheatNote").value.trim();
+    const cheatCodes = document.getElementById("cheatCodes").value.trim();
 
-    if (!description || !code) {
-      alert("Please fill in both the cheat description and code.");
+    if (!gameName || !gameID || !gameDate || !cheatName || !cheatCodes) {
+      alert("Please fill in all required fields.");
       return;
     }
 
-    cheats.push({ description, code, enable });
-    updateCheatPreview();
-    clearFormFields();
+    cheats.push({ cheatName, cheatNote, cheatCodes });
+    updateCheatPreview(gameName, gameID, gameDate);
+    clearCheatFields();
   });
 
-  // Download .xml File Button
+  // Download XML File Button
   document.getElementById("downloadCheatFile").addEventListener("click", () => {
     if (cheats.length === 0) {
       alert("No cheats to save.");
       return;
     }
 
-    let xmlContent = `<?xml version="1.0" encoding="UTF-8"?>\n<cheats>\n`;
+    const gameName = document.getElementById("gameName").value.trim();
+    const gameID = document.getElementById("gameID").value.trim();
+    const gameDate = document.getElementById("gameDate").value.trim();
+
+    let xmlContent = `<?xml version="1.0" encoding="UTF-8"?>\n<codelist>\n`;
+    xmlContent += `  <game>\n`;
+    xmlContent += `    <name>${gameName}</name>\n`;
+    xmlContent += `    <gameid>${gameID}</gameid>\n`;
+    xmlContent += `    <date>${gameDate}</date>\n`;
+
     cheats.forEach((cheat) => {
-      xmlContent += `  <cheat>\n`;
-      xmlContent += `    <desc>${cheat.description}</desc>\n`;
-      xmlContent += `    <code>${cheat.code}</code>\n`;
-      xmlContent += `    <enable>${cheat.enable}</enable>\n`;
-      xmlContent += `  </cheat>\n`;
+      xmlContent += `    <cheat>\n`;
+      xmlContent += `      <name>${cheat.cheatName}</name>\n`;
+      if (cheat.cheatNote) xmlContent += `      <note>${cheat.cheatNote}</note>\n`;
+      xmlContent += `      <codes>${cheat.cheatCodes}</codes>\n`;
+      xmlContent += `    </cheat>\n`;
     });
-    xmlContent += `</cheats>`;
+
+    xmlContent += `  </game>\n</codelist>`;
 
     const blob = new Blob([xmlContent], { type: "application/xml" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "cheats.xml";
+    a.download = `${gameName.replace(/\s+/g, "_")}_cheats.xml`;
     a.click();
     URL.revokeObjectURL(a.href);
   });
 
   // Update Cheat Preview
-  function updateCheatPreview() {
-    let previewContent = `<?xml version="1.0" encoding="UTF-8"?>\n<cheats>\n`;
+  function updateCheatPreview(gameName, gameID, gameDate) {
+    let previewContent = `<?xml version="1.0" encoding="UTF-8"?>\n<codelist>\n`;
+    previewContent += `  <game>\n`;
+    previewContent += `    <name>${gameName}</name>\n`;
+    previewContent += `    <gameid>${gameID}</gameid>\n`;
+    previewContent += `    <date>${gameDate}</date>\n`;
+
     cheats.forEach((cheat) => {
-      previewContent += `  <cheat>\n`;
-      previewContent += `    <desc>${cheat.description}</desc>\n`;
-      previewContent += `    <code>${cheat.code}</code>\n`;
-      previewContent += `    <enable>${cheat.enable}</enable>\n`;
-      previewContent += `  </cheat>\n`;
+      previewContent += `    <cheat>\n`;
+      previewContent += `      <name>${cheat.cheatName}</name>\n`;
+      if (cheat.cheatNote) previewContent += `      <note>${cheat.cheatNote}</note>\n`;
+      previewContent += `      <codes>${cheat.cheatCodes}</codes>\n`;
+      previewContent += `    </cheat>\n`;
     });
-    previewContent += `</cheats>`;
+
+    previewContent += `  </game>\n</codelist>`;
     cheatPreview.textContent = previewContent;
   }
 
   // Clear Form Fields
-  function clearFormFields() {
-    document.getElementById("cheatDescription").value = "";
-    document.getElementById("cheatCode").value = "";
-    document.getElementById("cheatEnable").checked = false;
+  function clearCheatFields() {
+    document.getElementById("cheatName").value = "";
+    document.getElementById("cheatNote").value = "";
+    document.getElementById("cheatCodes").value = "";
   }
 });
