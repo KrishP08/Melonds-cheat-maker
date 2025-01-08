@@ -11,22 +11,37 @@
   <div class="container">
     <h1 class="text-center mb-4">melonDS Cheat File Generator</h1>
     <form id="cheatForm">
+      <h3>Game Information</h3>
       <div class="mb-3">
-        <label for="cheatDescription" class="form-label">Cheat Description</label>
-        <input type="text" id="cheatDescription" class="form-control" placeholder="e.g., Unlimited Rare Candy">
+        <label for="gameName" class="form-label">Game Name</label>
+        <input type="text" id="gameName" class="form-control" placeholder="e.g., Pokemon HeartGold" required>
       </div>
       <div class="mb-3">
-        <label for="cheatCode" class="form-label">Cheat Code</label>
-        <input type="text" id="cheatCode" class="form-control" placeholder="e.g., 82025840 0044">
+        <label for="gameID" class="form-label">Game ID</label>
+        <input type="text" id="gameID" class="form-control" placeholder="e.g., IPKE CE515515" required>
       </div>
-      <div class="form-check mb-3">
-        <input type="checkbox" id="cheatEnable" class="form-check-input">
-        <label for="cheatEnable" class="form-check-label">Enable Cheat</label>
+      <div class="mb-3">
+        <label for="gameDate" class="form-label">Date</label>
+        <input type="date" id="gameDate" class="form-control" required>
+      </div>
+
+      <h3>Cheat Details</h3>
+      <div class="mb-3">
+        <label for="cheatName" class="form-label">Cheat Name</label>
+        <input type="text" id="cheatName" class="form-control" placeholder="e.g., Walk Through Walls" required>
+      </div>
+      <div class="mb-3">
+        <label for="cheatNote" class="form-label">Cheat Note</label>
+        <textarea id="cheatNote" class="form-control" rows="3" placeholder="e.g., Press R+B to enable"></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="cheatCodes" class="form-label">Cheat Codes</label>
+        <textarea id="cheatCodes" class="form-control" rows="5" placeholder="Enter cheat codes" required></textarea>
       </div>
       <button type="button" id="addCheat" class="btn btn-primary">Add Cheat</button>
-      <button type="button" id="downloadCheatFile" class="btn btn-success ms-2">Download .xml File</button>
+      <button type="button" id="downloadCheatFile" class="btn btn-success ms-2">Download XML File</button>
     </form>
-    <h3 class="mt-4">Cheat File Preview</h3>
+    <h3 class="mt-4">XML File Preview</h3>
     <div id="cheatPreview" class="preview-box"></div>
   </div>
   <script src="script.js"></script>
